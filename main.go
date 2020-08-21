@@ -14,14 +14,11 @@ import (
 
 func main() {
 	l := log.New(os.Stdout, "product-api", log.LstdFlags)
-
 	ph := handlers.NewProduct(l)
 	//gh := handlers.Newbye(l)
 
 	sm := mux.NewRouter()
-	getrouter := sm.Methods("GET").Subrouter()
-	getrouter.HandleFunc("/", ph.GetProducts)
-	// sm.Handle("/", ph)
+	sm.Handle("/", ph)
 	//sm.Handle("/bye", gh)
 
 	ser := http.Server{
