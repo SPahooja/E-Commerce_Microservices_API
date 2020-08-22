@@ -14,11 +14,23 @@ import (
 
 func main() {
 	l := log.New(os.Stdout, "product-api", log.LstdFlags)
+
 	ph := handlers.NewProduct(l)
 	//gh := handlers.Newbye(l)
 
 	sm := mux.NewRouter()
-	sm.Handle("/", ph)
+	getrouter := sm.Methods(http.MethodGet).Subrouter()
+	getrouter.HandleFunc("/", ph.GetProducts)
+
+	putrouter := sm.Methods(http.MethodPut).Subrouter()
+	putrouter.HandleFunc("/{id:[0-9]+}", ph.UpdateProduct)
+	putrouter.Use(ph.MiddlewareProductValidation)
+	
+	postrouter := sm.Methods(http.MethodPost).Subrouter()
+	postrouter.HandleFunc("/", ph.AddProduct)
+	postrouter.Use(ph.MiddlewareProductValidation)
+
+	// sm.Handle("/", ph)
 	//sm.Handle("/bye", gh)
 
 	ser := http.Server{
