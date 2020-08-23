@@ -1,4 +1,4 @@
-module github.com/nicholasjackson/building-microservices-youtube/currency
+module GoMicroservice
 
 go 1.13
 
